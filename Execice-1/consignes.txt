@@ -1,0 +1,63 @@
+Exercice 1
+==========
+
+L'exercice 1 consiste à écrire un petit programme qui lit des mots sur
+la ligne de commande jusqu'à ce que l'utilisateur entre "stop", qui
+trie ces mots et qui retire les doublons entrés.
+
+Voici un exemple d'utilisation du programme :
+
+$ java Exercice1
+# Entrée au clavier :
+bonjour
+test
+test
+123
+ABC
+abc
+abc
+ift1025
+ift1015
+test
+stop
+# Affichage du programme :
+123
+ABC
+abc
+bonjour
+ift1015
+ift1025
+test
+
+
+
+Utilisez la méthode `str1.compareTo(str2)` pour comparer les chaînes
+caractères. Vous pouvez utiliser l'algorithme de tri que vous voulez,
+tant que vous le codez vous-même (vous ne pouvez pas utiliser une
+fonction existante ou copier du code d'internet).
+
+
+Vous avez une base de code à remplir, `Exercice1.java`, assurez-vous
+de coder chaque fonction conformément à la documentation fournie.
+
+Vous ne devez *pas* modifier les noms, paramètres et types de retour
+de fonctions, mais sentez-vous libres d'ajouter des nouvelles
+fonctions au besoin.
+
+N'utilisez que les concepts vus en classe à date (donc pas
+d'ArrayList, LinkedList, ... ou autre chose que vous pourriez trouver
+sur internet)
+
+
+
+- Vous devez remettre votre fichier Exercice1.java sur StudiUM d'ici
+  le 24 mai 2024 à 23h59 au plus tard
+- Assurez-vous que votre programme compile et s'exécute correctement avec
+  les commandes :
+
+    javac Exercice1.java
+    java Exercice1
+
+- Assurez-vous de respecter la spécification et assurez-vous que votre programme
+  compile si vous ne voulez pas vous retrouver avec la note de 0
+- Aucun travail remis en retard ne sera évalué

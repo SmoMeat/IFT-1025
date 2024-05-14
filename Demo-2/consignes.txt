@@ -1,0 +1,223 @@
+0. Présentation et explications sur l'IDE IntelliJ
+
+
+1. Essayez de compiler le programme suivant :
+
+public class Print {
+
+    public void print(int x) {
+        System.out.println(x);
+    }
+
+    public static void main(String[] args) {
+        int n = 13;
+        print( n );
+    }
+}
+
+Rep: une méthode statique ne peut pas appeler une autre méthode non-statique
+
+Expliquez le problème.
+
+
+2. Concevez et écrivez une classe `De`, sachant que :
+
+- Un dé a un certain nombre de faces (6, 12, ...)
+- On peut lancer le dé pour obtenir un résultat allant de 1 à [maximum
+  selon le nombre de côtés]
+- On peut instancier un objet qui génère des nombres aléatoires avec :
+
+    Random rand = new Random();
+    rand.nextInt(maxN);
+
+où rand.nextInt(maxN) retourne une valeur comprise entre 0 (inclus) et
+maxN (exclus)
+
+Quels sont les attributs de l'objet ?
+Quel est le constructeur ?
+A-t-on besoin de variables/méthodes statiques ?
+
+
+3. Présenter les slides de Rafik sur la JavaDoc et commenter la classe
+   De précédente
+
+Montrer comment la JavaDoc est affichée dans IntelliJ lors de
+l'autocomplétion.
+
+
+4. Écrivez une classe Romain qui permet de manipuler des chiffres
+   romains compris entre 1 et 3999
+
+La classe devrait permettre :
+
+- D'afficher la valeur du chiffre en String en appelant
+
+    chiffreRomain.valeur()
+
+- D'additionner un chiffre romain à un autre avec
+
+    chiffreRomain.ajouter(autreChiffre)
+
+- De multiplier un chiffre romain par un autre avec
+
+    chiffreRomain.multiplier(autreChiffre)
+
+
+Un exemple de programme donnerait :
+
+    Romain r1 = new Romain(10);
+    Romain r2 = new Romain(4);
+
+    System.out.println(r1.valeur());
+    // => Affiche "X"
+
+    System.out.println(r2.valeur());
+    // => Affiche "IV"
+
+    r1.ajouter(r2); // On ajoute 4 à 10
+
+    System.out.println(r1.valeur());
+    // => Affiche "XIV"
+
+    r1.multiplier(r2); // On multiplie 14 par 4
+
+    System.out.println(r1.valeur());
+    // => Affiche "LVI"
+
+
+Ajoutez une fonction statique main à votre programme pour tester votre
+code.
+
+
+Assurez-vous de commenter vos fonctions en respectant le standard
+JavaDoc.
+
+Déterminez si vos attributs et méthodes devraient être private ou
+public, static ou non.
+
+
+
+Vous pouvez vous baser sur ce programme procédural :
+
+public class RomanNumerals {
+
+    public static void main(String[] args) {
+        String dix = romain(10);
+        String cinq = romain(5);
+        
+        System.out.println(dix);
+        System.out.println(cinq);
+    }
+
+    /**
+     *
+     * Retourne un texte correspondant à la numération romaine de n, qui doit
+     * être un nombre entier entre 1 et 3999
+     */
+    public static String romain(int n) {
+
+        return chiffre(n, 1000, "M", "?", "?")
+                + chiffre(n, 100, "C", "D", "M")
+                + chiffre(n, 10, "X", "L", "C")
+                + chiffre(n, 1, "I", "V", "X");
+    }
+
+    /**
+     * Retourne un texte correspondant au chiffre de n de poids puiss10.
+     */
+    public static String chiffre(int n, int puiss10, String un, String cinq, String dix) {
+
+        // Retourne un texte correspondant au chiffre de n de poids puiss10.
+        int c = (int) Math.floor(n / puiss10) % 10;
+
+        if (c < 4) {
+            return repeter(c, un);
+        } else if (c == 4) {
+            return "" + un + cinq;
+        } else if (c < 9) {
+            return cinq + repeter(c - 5, un);
+        } else {
+            return "" + un + dix;
+        }
+    }
+
+    /**
+     * Retourne un texte qui contient n répétitions du texte sujet (par exemple
+     * repeter(3,"I") retourne "III").
+     */
+    public static String repeter(int n, String sujet) {
+
+        // Retourne un texte qui contient n répétitions du texte sujet
+        // (par exemple repeter(3,"I") retourne "III").
+        String accum = "";
+
+        for (int i = n; i > 0; i--) {
+            accum += sujet;
+        }
+
+        return accum;
+    }
+}
+
+5. Codez une classe StringCompressee qui permet de représenter une
+   chaîne de caractères par du Run Length Encoding.
+
+Le Run Length Encoding est un encodage simple de compression de
+données. Sur des Strings, l'idée est d'encoder le nombre d'occurences
+consécutives d'un caractères plutôt que de conserver tous les
+caractères, par exemple :
+
+aaaaaaaaaabbbbbaaba
+
+Sera représenté par :
+
+10x a, 5x b, 2x a, 1x b, 1x a
+
+
+La classe StringCompressee devrait avoir les méthodes suivantes :
+
+- StringCompressee(String originale), un constructeur qui construit la
+  String compressée
+
+- public String decompresser(), qui permet de calculer la String
+  originale à partir de la version compressée
+
+- public int tailleOriginale(), qui indique le nombre de bits que la
+  String originale demandait en terme de mémoire
+
+- public int tailleCompressee(), qui indique le nombre de bits que la
+  String compressée demande en mémoire
+
+
+Notez : en Java, un int est stocké sur 32 bits et un char est stocké
+sur 16 bits. Un tableau de 10 char demande donc 16 * 10 bits.
+
+
+Écrivez des tests unitaires en appelant la méthode statique suivante
+depuis la méthode main :
+
+
+    public static void test(String test) {
+
+        StringCompressee s = new StringCompressee(test);
+
+        if(test.equals(s.decompresser())) {
+            System.out.print("Ok: " + test);
+            System.out.println(" (" + s.tailleCompressee() + " vs " + s.tailleOriginale() + " bits)");
+        } else {
+            System.out.println("Erreur: " + test + s.decompresser());
+        }
+    }
+
+
+
+6. Rappel d'algèbre linéaire
+
+  * Dot Product (produit scalaire) sur deux vecteurs
+  * Dot Product (produit matriciel) entre deux matrices (Animation http://matrixmultiplication.xyz)
+  * Matrice identité
+  * Matrice transposée
+
+Note : consultez
+https://www.mathsisfun.com/algebra/matrix-multiplying.html au besoin
+pour un rappel ludique et amusant
