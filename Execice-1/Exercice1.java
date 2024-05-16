@@ -1,4 +1,13 @@
-import java.util.Arrays;
+/**
+ * @author Mathieu Ducharme
+ * @email mathieu.ducharme@umontreal.ca
+ * @matricule 20297456 
+ * 
+ * L'exercice 1 consiste à écrire un petit programme qui lit des mots sur
+ * la ligne de commande jusqu'à ce que l'utilisateur entre "stop", qui
+ * trie ces mots et qui retire les doublons entrés.
+ */
+
 import java.util.Scanner;
 
 public class Exercice1 {
@@ -27,7 +36,7 @@ public class Exercice1 {
     public static String[] lireMots() {
         Scanner scanner = new Scanner(System.in);
         boolean listen = true;
-        
+
         String[] wordsList = new String[0];
 
         while (listen) {
@@ -41,14 +50,12 @@ public class Exercice1 {
             
             wordsList = agrandirTab(wordsList);
             wordsList[wordsList.length - 1] = userInput;
-            wordsList = trier(wordsList);
-            wordsList = retirerDoublons(wordsList);
-            // System.out.println(Arrays.toString(wordsList));
         } 
         
-
         scanner.close();
-        return wordsList;
+
+        wordsList = trier(wordsList);
+        return retirerDoublons(wordsList);
     }
 
 
@@ -76,25 +83,20 @@ public class Exercice1 {
      * retirés).
      */
     public static String[] retirerDoublons(String[] mots) {
-        int wordsRemoved = 0;
-        for (int i = 0; i < mots.length-1; i++) {
-            if (mots[i].compareTo(mots[i+1]) == 0) {
-                mots[i] = "stop";
-                wordsRemoved += 1;
-            }
-        }
+        int i = 1;
+        String[] uniqueStrings = { mots[0] };
 
-        String[] newList = new String[mots.length - wordsRemoved];
-        int j = 0;
-        for (int i = 0; i < mots.length; i++) {
-            if (mots[i].compareTo("stop") == 0) {
+        while (i < mots.length) {
+            if (mots[i].equals(mots[i-1])) {
                 continue;
             }
-            newList[j] = mots[i];
-            j += 1;
+
+            uniqueStrings = agrandirTab(uniqueStrings);
+            uniqueStrings[i] = mots[i];
+            i++;
         }
 
-        return newList;
+        return uniqueStrings;
     }
 
 
