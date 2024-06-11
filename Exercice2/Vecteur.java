@@ -1,3 +1,13 @@
+/**
+ * @author Mathieu Ducharme
+ * @email mathieu.ducharme@umontreal.ca
+ * @matricule 20297456 
+ * 
+ * Cette classe permet d'instancier des vecteurs de longueur n
+ * grace à une liste de double et d'effectuer des opérations
+ * élémentaires d'algèbre linéaire.
+ */
+
 package Exercice2;
 
 import java.util.Arrays;

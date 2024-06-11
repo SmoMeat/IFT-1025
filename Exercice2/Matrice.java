@@ -1,3 +1,13 @@
+/**
+ * @author Mathieu Ducharme
+ * @email mathieu.ducharme@umontreal.ca
+ * @matricule 20297456 
+ * 
+ * Cette classe permet d'instancier des matrices de taille m par n
+ * ou une matrice identité de taille m par m et d'effectuer des
+ * opérations élémentaires d'algèbre linéaire.
+ */
+
 package Exercice2;
 
 import java.util.Arrays;
@@ -53,7 +63,7 @@ public class Matrice {
      * @return la nouvelle matrice résultante
      */
     public Matrice dotProduct(Matrice m) {
-        if (this.numLines != m.getNumCols()) {
+        if (this.numCols != m.getNumLines()) {
             System.err.println("Erreur dans les dimensions des matrices");
             return null;
         }
@@ -107,7 +117,8 @@ public class Matrice {
      * @return la colonne choisie sous forme de Vecteur
      */
     public Vecteur getCol(int col) {
-        return new Vecteur(this.matrix[col]);
+        Matrice transposedMatrix = this.transpose();
+        return transposedMatrix.getLine(col);
     }
 
     /**
