@@ -1,44 +1,56 @@
 package Exercice3;
 
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Player extends BlackjackPlayer {
-    private double mise;
+    private double betAmount;
+    private String uuid;
     private boolean isPlaying = true;
     private boolean surrendered = false;
 
-    public Player(Card firstCard, Card secondCard, int mise) {
-        super(firstCard, secondCard); // à confirmer
-
-        this.mise = mise;
-
+    public Player(ArrayList<Card> cards, String name, double betAmount, String uuid) {
+        super(cards, name);
+        this.betAmount = betAmount;
+        this.uuid = uuid;
     }
 
+    public void hit(Card card) {
+        this.ajouterCarte(card);
+    }
+    
     public void stand() {
         this.isPlaying = false;
+    }
+
+    public void doubleDown(Card card) {
+        this.ajouterCarte(card);
+        this.betAmount *= 2;
+        this.isPlaying = false;
+    }
+
+    public void surrender() {
+        this.surrendered = true;
+        this.isPlaying = false;
+        this.betAmount *= 0.5;
     }
 
     public boolean isPlaying() {
         return this.isPlaying;
     }
 
-    public void doublerMise() {
-        this.mise *= 2;
+    public boolean isSurrended() {
+        return this.surrendered;
     }
 
-    public void surrender() {
-        this.surrendered = true;
+    public void multiplyBetAmount(double multiplier) {
+        this.betAmount *= multiplier;
     }
 
-    public double amountGained(int computerPoints) {
-        if (this.surrendered) {
-            return -0.5 * this.mise;
-        } else if (this.getPoints() > 21) {
-            return -1 * this.mise;
-        } else if (computerPoints > 21) {
-            return this.mise;
-        } else if (this.getPoints())......
+    public double getBetAmount() {
+        return this.betAmount;
     }
 
-
+    public String getUuid() {
+        return this.uuid;
+    }
 }
