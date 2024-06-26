@@ -1,5 +1,7 @@
 package Exercice4;
 
+import java.util.function.Consumer;
+
 public class Polynome {
 
     ListeChainee polynome = new ListeChainee();
@@ -11,7 +13,7 @@ public class Polynome {
      * @param exposant exposant e du terme à ajouter
      */
     public void ajouter(double coeff, int exposant) {
-        polynome.add(coeff, exposant);
+        polynome.ajouter(coeff, exposant);
     }
 
     /**
@@ -25,7 +27,8 @@ public class Polynome {
     public Polynome additionner(Polynome autre) {
         Polynome resultat = new Polynome();
 
-        // ...
+        autre.forEach(terme -> resultat.ajouter(terme.getCoeff(), terme.getExposant()));
+        polynome.forEach(terme -> resultat.ajouter(terme.getCoeff(), terme.getExposant()));
 
         return resultat;
     }
@@ -41,7 +44,7 @@ public class Polynome {
     public Polynome multiplier(double c) {
         Polynome resultat = new Polynome();
 
-        // ...
+        polynome.forEach(terme -> resultat.ajouter(c * terme.getCoeff(), terme.getExposant()));
 
         return resultat;
     }
@@ -57,7 +60,14 @@ public class Polynome {
     public Polynome multiplier(Polynome autre) {
         Polynome resultat = new Polynome();
 
-        // ...
+        for (ListeChainee.Noeud premierTerme : polynome) {
+            autre.forEach(deuxiemeTerme -> {
+                resultat.ajouter(
+                    premierTerme.getCoeff() * deuxiemeTerme.getCoeff(),
+                    premierTerme.getExposant() + deuxiemeTerme.getExposant()
+                );
+            });
+        }
 
         return resultat;
     }
@@ -72,10 +82,23 @@ public class Polynome {
     public Polynome derivee() {
         Polynome derivee = new Polynome();
 
-        // ...
+        polynome.forEach(terme -> {
+            derivee.ajouter(
+                terme.getCoeff()  * terme.getExposant(),
+                terme.getExposant() - 1
+            );
+        });
 
         return derivee;
     }
+
+
+    public void forEach(Consumer<ListeChainee.Noeud> action) {
+        for (ListeChainee.Noeud terme : polynome) {
+            action.accept(terme);
+        }
+    }
+
 
     @Override
     public String toString() {
@@ -108,7 +131,6 @@ public class Polynome {
 
         p = new Polynome();
         p.ajouter(10, 1);
-        System.out.println(p);
         assertTest(p.toString().equals("10x"), "Un seul terme (exposant=1)");
 
         p = new Polynome();
@@ -126,7 +148,7 @@ public class Polynome {
 
         p.ajouter(-22, 3);
         assertTest(p.toString().equals("5x^4 + -22x^3 + 13x^2 + 7"), "Ajouter un coefficient négatif");
-
+        // enlever le + - 
 
         Polynome derivee = p.derivee();
         assertTest(derivee.toString().equals("20x^3 + -66x^2 + 26x"), "Dérivée");

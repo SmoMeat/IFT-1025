@@ -1,159 +1,152 @@
 package Exercice4;
 
+import java.util.Iterator;
+import java.util.Optional;
 import java.text.DecimalFormat;
 
-public class ListeChainee {
 
-    private Node firstNode;
+public class ListeChainee implements Iterable<ListeChainee.Noeud> {
 
-    private class Node {
-        public double coefficient;
-        public int exponent;
-        public Node next;
+    private Noeud premierNoeud;
 
-        public Node(double coefficient, int exposant, Node next) {
-            this.coefficient = coefficient;
-            this.exponent = exposant;
-            this.next = next;
+    class Noeud {
+        public double coeff;
+        public int exposant;
+        public Noeud suivant;
+
+        public Noeud(double coefficient, int exposant, Noeud suivant) {
+            this.coeff = coefficient;
+            this.exposant = exposant;
+            this.suivant = suivant;
         }
 
-        public Node getNext() {
-            return this.next;
+        public double getCoeff() {
+            return this.coeff;
+        }
+
+        public void setCoeff(double coeff) {
+            this.coeff = coeff;
+        }
+
+        public int getExposant() {
+            return this.exposant;
+        }
+
+        public void setExposant(int exposant) {
+            this.exposant = exposant;
+        }
+
+        public Noeud getSuivant() {
+            return this.suivant;
+        }
+
+        public void setSuivant(Noeud next) {
+            this.suivant = next;
         }
 
         @Override
         public String toString() {
             DecimalFormat formatter = new DecimalFormat("0.#");
-            if (exponent == 0) {
-                return formatter.format(coefficient);
-                //return String.valueOf(coefficient);
-            } else if (exponent == 1) {
-                return formatter.format(coefficient) + "x";
+            if (exposant == 0) {
+                return formatter.format(coeff);
+            } else if (exposant == 1) {
+                return formatter.format(coeff) + "x";
             }
-            return formatter.format(coefficient) + "x^" + exponent;
+            return formatter.format(coeff) + "x^" + exposant;
         }
     }
 
-    // public ListeChainee() {
-    //     this.firstNode = new Node(0, 0, null);
-    // }
-
     @Override
     public String toString() {
-        Node node = this.firstNode;
-        String str = node.toString();
-        while ((node = node.getNext()) != null) {
-            str += " + " + node.toString();
+        Noeud noeud = this.premierNoeud;
+        String str = noeud.toString();
+        while ((noeud = noeud.getSuivant()) != null) {
+            str += " + " + noeud.toString();
         }
         return str;
     }
 
-    // /**
-    //  * Retrouve le idx-ème nœud de la chaîne
-    //  *
-    //  * @param idx indice du nœud
-    //  * @return nœud sélectionné
-    //  */
-    // private Node getNode(int idx) {
-    //     Node node = this.firstNode;
-
-    //     for(int i=0; i<idx; i++) {
-    //         node = node.getNext();
-    //     }
-
-    //     return node;
-    // }
-
-    // /**
-    //  * Accède au idx-ème élément
-    //  *
-    //  * @param idx indice du nœud
-    //  * @return valeur du nœud
-    //  */
-    // public int get(int idx) {
-    //     return getNode(idx).coefficient;
-    // }
-
-
-    public double getCoeffByExponent(int exponent) {
-        Node node = this.firstNode;
-        while (node.exponent != exponent) {
-            node = node.getNext();
-        }
-        return node.coefficient;
-    }
-
-    // /**
-    //  * Modifie le idx-ème élément
-    //  *
-    //  * @param idx indice du nœud
-    //  * @param valeur valeur du nœud
-    //  */
-    public void add(double coeff, int exponent) {
-        if (this.firstNode == null) {
-            this.firstNode = new Node(coeff, exponent, null);
-            return;
-        }
-
-        Node node = this.firstNode;
-
-        while (node.exponent > exponent) {
-            node = node.getNext();
-        }
-
-        node.next = (node.exponent != exponent)
-                        ? new Node(node.coefficient, node.exponent, node.getNext())
-                        : node.getNext();
-        node.coefficient = coeff;
-        node.exponent = exponent;
-    }
-
-    /**
-     * Calcule la taille de la liste chaînée
-     *
-     * @return taille de la liste
-     */
     public int size() {
         int size = 0;
 
-        Node n = this.firstNode;
+        Noeud n = this.premierNoeud;
 
         while(n != null) {
             size++;
-            n = n.next;
+            n = n.getSuivant();
         }
 
         return size;
     }
 
-    // /**
-    //  * Ajoute un élément au début de la liste
-    //  *
-    //  * @param valeur valeur du nœud
-    //  */
-    // public void addFirst(int valeur) {
-    //     this.firstNode = new Node(valeur, this.firstNode);
-    // }
+    public void ajouter(double coeff, int exposant) {
+        if (this.premierNoeud == null) {
+            exposant = (coeff == 0) ? 0 : exposant;
+            this.premierNoeud = new Noeud(coeff, exposant, null);
+            return;
+        }
+        Noeud noeud = this.premierNoeud;
 
-    // /**
-    //  * Ajoute un élément à la fin de la liste
-    //  *
-    //  * @param valeur valeur du nœud
-    //  */
-    // public void addLast(int valeur) {
-    //     if(this.firstNode == null) { // Cas 1 : rien dans la liste
-    //         this.firstNode = new Node(valeur, null);
-    //     } else { // Cas 2 : trouver le nœud final
-    //         Node fin = this.firstNode;
-    //         Node n = this.firstNode.next;
+        while (noeud.exposant > exposant) {
+            if (noeud.getSuivant() != null) {
+                noeud = noeud.getSuivant();
+            } else {
+                Noeud nouveauNoeud = new Noeud(0, exposant, null);
+                noeud.suivant = nouveauNoeud;
+                noeud = nouveauNoeud;
+            }
+        }
+        
+        noeud.suivant = (noeud.exposant != exposant)
+                        ? new Noeud(noeud.coeff, noeud.exposant, noeud.getSuivant())
+                        : noeud.getSuivant();
+        noeud.coeff = (noeud.exposant != exposant)
+                        ? coeff
+                        : noeud.coeff + coeff;
+        noeud.exposant = exposant;
 
-    //         while(n != null) {
-    //             fin = n;
-    //             n = n.next;
-    //         }
+        if (noeud.coeff == 0) {
+            retirer(noeud);
+        }
+    }
 
-    //         // Ajoute un nœud après la fin de la liste
-    //         fin.next = new Node(valeur, null);
-    //     }
-    // }
+    public void retirer(Noeud noeudToDelete) {
+        if (noeudToDelete == this.premierNoeud) {
+            noeudToDelete.setCoeff(0);
+            noeudToDelete.setExposant(0);
+            noeudToDelete.setSuivant(null);
+        }
+
+        Noeud noeud = this.premierNoeud;
+        Noeud noeudSuivant;
+
+        while ((noeudSuivant = noeud.getSuivant()) != null) {
+            if (noeudSuivant == noeudToDelete) {
+                noeud.setSuivant(noeudSuivant.getSuivant());
+            }
+            noeud = noeudSuivant;
+        }
+    }
+    
+    public Iterator<Noeud> iterator() {
+        return new NodeIterator();
+    }
+
+    class NodeIterator implements Iterator<Noeud>{
+        private Noeud current;
+
+        public boolean hasNext() {
+            if (current == null) {
+                current = premierNoeud;
+                return Optional.ofNullable(current).isPresent();
+            } else {
+                current = current.suivant;
+                return Optional.ofNullable(current).isPresent();
+            }
+        }
+
+        public Noeud next() {
+            return current;
+        }
+    }
 }

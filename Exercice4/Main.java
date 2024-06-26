@@ -2,15 +2,40 @@ package Exercice4;
 
 public class Main {
     public static void main(String[] args) {
-        ListeChainee liste = new ListeChainee();
+        Polynome p1 = new Polynome();
+        Polynome p2 = new Polynome();
 
-        liste.add(10, 0);
-        liste.add(5,2);
-        liste.add(3.3, 7);
-        liste.add(2.1, 4);
+        p1.ajouter(3, 0);
+        p1.ajouter(-2, 1);
+        p1.ajouter(1,3);
 
-        System.out.println(liste);
-        System.out.println(liste.size());
+        p2.ajouter(7, 0);
+        p2.ajouter(4, 2);
+        p2.ajouter(3, 3);
+
+        System.out.println(p1);
+        System.out.println(p2);
+
+        Polynome p3 = p1.additionner(p2);
+        System.out.println(p3);
+
+        Polynome p4 = p3.multiplier(2);
+        System.out.println(p4);
+        
+        Polynome p5 = p1.multiplier(p2);
+        System.out.println(p5);
+        
+        Polynome p6 = p5.derivee();
+        System.out.println(p6);
+
+        Polynome p7 = new Polynome();
+        p7.ajouter(10, 0);
+        Polynome p8 = p7.derivee();
+        System.out.println(p8);
+
+
+        // System.out.println(liste);
+        // System.out.println(liste.size());
 
 
 
