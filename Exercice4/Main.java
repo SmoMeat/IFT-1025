@@ -34,6 +34,14 @@ public class Main {
         System.out.println(p8);
 
 
+        Polynome p9 = new Polynome();
+        p9.ajouter(3, 10);
+        p9.ajouter(-3, 10);
+        System.out.println("lllll");
+        System.out.println(p9);
+
+
+
         // System.out.println(liste);
         // System.out.println(liste.size());
 
